@@ -10,37 +10,57 @@ import java.util.List;
 
 @Service
 public class DirectorService {
-
     private final DirectorRepository directorRepository;
 
     public DirectorService(DirectorRepository directorRepository) {
         this.directorRepository = directorRepository;
     }
 
-    //Cria um objeto diretor e faz validação de campos
-    public Director create(DirectorRequest request) {
+    //Faz a validação do diretor
+    private void validateDirector(DirectorRequest request) {
         if (request.getName() == null || request.getName().trim().isEmpty()) {
-            throw new FieldValidationException("O nome do diretor é obrigatório e não pode conter apenas espaços.");
+            throw new FieldValidationException("O nome do diretor é obrigatório.");
         }
-
         if (request.getNationality() == null || request.getNationality().trim().isEmpty()) {
-            throw new FieldValidationException("A nacionalidade do diretor é obrigatória e não pode conter apenar espaços.");
+            throw new FieldValidationException("A nacionalidade do diretor é obrigatória.");
         }
+    }
 
-        Director director = new Director();
+    //Faz a atribuição de dados do request para o objeto
+    private void transferData(Director director, DirectorRequest request) {
         director.setName(request.getName().trim());
         director.setNationality(request.getNationality().trim());
+    }
+
+    public Director create(DirectorRequest request) {
+        validateDirector(request);
+
+        Director director = new Director();
+        transferData(director, request);
 
         return directorRepository.save(director);
     }
 
-    //Pega todos os objetos diretor
+    public Director update(Long id, DirectorRequest request) {
+        Director existingDirector = findById(id);
+        validateDirector(request);
+
+        transferData(existingDirector, request);
+
+        return directorRepository.save(existingDirector);
+    }
+
     public List<Director> findAll() {
         return directorRepository.findAll();
     }
 
-    //Retorna um objeto diretor de acordo com o id
-    public Director findById(Long id){
-        return directorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Diretor de ID " + id + " não foi encontrado."));
+    public Director findById(Long id) {
+        return directorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Diretor de ID " + id + " não foi encontrado."));
+    }
+
+    public void deleteById(Long id) {
+        Director director = findById(id);
+        directorRepository.deleteById(id);
     }
 }
