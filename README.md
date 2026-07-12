@@ -31,13 +31,17 @@ A API possui documentação automatizada via Swagger. Com a aplicação rodando,
 
 ### 🎬 Filmes (`/filmes`)
 * `GET /filmes` - Lista todos os filmes com seus respectivos diretores aninhados.
+* `GET /filmes/{id}` - Apresenta o filme com seu respectivo diretor aninhado de acordo com o id (Requer o id de um filme válido).
 * `POST /filmes` - Cadastra um novo filme (Requer o ID de um diretor válido).
-* `PUT /filmes/{id}` - Atualiza os dados de um filme.
-* `DELETE /filmes/{id}` - Remove um filme do catálogo.
+* `PUT /filmes/{id}` - Atualiza os dados de um filme de acordo com o id.
+* `DELETE /filmes/{id}` - Remove um filme do catálogo de acordo com o id.
 
 ### 👔 Diretores (`/diretores`)
 * `GET /diretores` - Lista todos os diretores.
+* `GET /filmes/{id}` - Apresenta o diretor de acordo com o id (Requer o id de um diretor válido).
 * `POST /diretores` - Cadastra um novo diretor.
+* `PUT /filmes/{id}` - Atualiza os dados de um diretor de acordo com o id.
+* `DELETE /filmes/{id}` - Remove um filme do catálogo de acordo com o id.
 
 ---
 
